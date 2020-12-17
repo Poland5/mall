@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <nav-bar class="home-nav">
-      <div slot="center">购物街</div>
+      <div slot="center">购物街</div>mnb
     </nav-bar>
     <home-swiper :banner="banner"></home-swiper>
   </div>
