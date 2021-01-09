@@ -3,119 +3,26 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>mnb
     </nav-bar>
+    <tab-control
+      :titles="['流行','新款','精选']"
+      @tabClick="tabClick"
+      ref="tabControlFixed"
+      class="tab-control"
+      v-show="isTabFixed"/>
     <scroll class="content"
             ref="scroll"
             @scroll="scrollContent"
             :probe-type="3"
             :pull-up-load="true"
             @pullingUp="loadMore">
-      <home-swiper :banner="banner"></home-swiper>
+      <home-swiper :banner="banner" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <home-recommends :recommend="recommend"/>
       <home-feature/>
-      <tab-control :titles="['流行','新款','精选']" @click="clickTab"/>
+      <tab-control
+        :titles="['流行','新款','精选']"
+        @tabClick="tabClick"
+        ref="tabControl"/>
       <goods-list :goods="showGoods"></goods-list>
-      <!-- <ul>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-        <li>lb</li>
-      </ul> -->
     </scroll>
     <back-top @click.native="clickBack" v-show="isShowBackTop"></back-top>
   </div>
@@ -133,6 +40,7 @@ import Scroll from 'components/common/scroll/Scroll'
 import BackTop from 'components/content/backTop/BackTop'
 
 import { getMultidata, getHomeGoods } from 'network/home'
+import { debounce } from 'common/utils'
 
 export default {
   data() {
@@ -145,7 +53,9 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentTypes: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      controlOffsetTop: 0,
+      isTabFixed: false
     }
   },
   components: {
@@ -166,11 +76,10 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-
   },
   mounted() {
     // 3. 监听图片加载完成
-    const refresh = this.debounce(this.$refs.scroll.refresh, 500)
+    const refresh = debounce(this.$refs.scroll.refresh, 50)
     this.$bus.$on('loadImageItem', () => {
       refresh()
     })
@@ -184,7 +93,7 @@ export default {
     /**
      * 事件监听相关方法
      */
-    clickTab(index){
+    tabClick(index){
       switch (index) {
         case 0:
           this.currentTypes = 'pop'
@@ -195,24 +104,23 @@ export default {
         case 2:
           this.currentTypes = 'sell'
       }
+      this.$refs.tabControlFixed.currentIndex = index
+      this.$refs.tabControl.currentIndex = index
     },
     clickBack() {
       this.$refs.scroll.scrollTo(0, 0)
     },
     scrollContent(position) {
       this.isShowBackTop = Math.abs(position.y) > 1000
+
+      // 判断是否吸顶
+      this.isTabFixed = Math.abs(position.y) > this.tabOffsetTop
     },
     loadMore() {
       this.getHomeGoods(this.currentTypes)
     },
-    debounce(func, delay) {
-      let timer = null
-      return function(...args) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
+    swiperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
     },
 
     /**
@@ -225,7 +133,8 @@ export default {
       })
     },
     getHomeGoods(type) {
-      const page = this.goods[type].page + 1 //
+      // 通过获取页码和类型、向服务器取值
+      const page = this.goods[type].page + 1
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page + 1
@@ -245,15 +154,10 @@ export default {
   .home-nav {
     background-color: var(--color-text);
     color: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
   }
   .tab-control {
-		position: relative;
-		// top: 44px;
+    position: relative;
+    background-color: var(--color-background);
 		z-index: 9;
   }
   .content {

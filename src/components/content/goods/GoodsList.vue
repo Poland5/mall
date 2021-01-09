@@ -7,11 +7,6 @@
 <script>
 import GoodsListItem from './GoodsListItem.vue'
 export default {
-  data() {
-    return {
-
-    }
-  },
   props: {
     goods: {
       type: Array,
