@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <detail-nav-bar/>
-    <detail-swiper :top-images="topImages"/>
+    <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import DetailSwiper from './childCompos/DetailSwiper';
 
 import { getDetail } from 'network/detail'
 export default {
+  name: 'Detail',
   data() {
     return {
       iid: null,
