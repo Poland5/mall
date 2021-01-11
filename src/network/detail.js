@@ -11,6 +11,7 @@ export function getDetail(iid) {
 
 /**
  * 数据整合 —— 在数据比较杂乱的情况
+ * 商品信息
  */
 export class GoodsInfo {
   constructor(itemInfo, columns, services) {
@@ -22,5 +23,19 @@ export class GoodsInfo {
     this.columns = columns
     this.services = services
     this.realPrice = itemInfo.lowNowPrice
+  }
+}
+
+/**
+ * 商铺信息
+ */
+export class Shop {
+  constructor(shopInfo) {
+    this.logo = shopInfo.shopLogo
+    this.name = shopInfo.name
+    this.fans = shopInfo.cFans
+    this.sells = shopInfo.cSells
+    this.score = shopInfo.score
+    this.goodsCount = shopInfo.cGoods
   }
 }

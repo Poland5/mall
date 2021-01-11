@@ -2,29 +2,33 @@
   <div class="detail">
     <detail-nav-bar/>
     <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
-    <detail-base-info :goods="goods"></detail-base-info>
+    <detail-base-info :goods="goods"/>
+    <detail-shop-info :shop="shop"/>
   </div>
 </template>
 
 <script>
-import DetailNavBar from './childCompos/DetailNavBar';
-import DetailSwiper from './childCompos/DetailSwiper';
-import DetailBaseInfo from './childCompos/DetailBaseInfo';
+import DetailNavBar from './childCompos/DetailNavBar'
+import DetailSwiper from './childCompos/DetailSwiper'
+import DetailBaseInfo from './childCompos/DetailBaseInfo'
+import DetailShopInfo from './childCompos/DetailShopInfo'
 
-import { getDetail, GoodsInfo } from 'network/detail'
+import { getDetail, GoodsInfo, Shop } from 'network/detail'
 export default {
   name: 'Detail',
   data() {
     return {
       iid: null,
       topImages: [],
-      goods: {}
+      goods: {},
+      shop: {}
     };
   },
   components: {
     DetailNavBar,
     DetailSwiper,
-    DetailBaseInfo
+    DetailBaseInfo,
+    DetailShopInfo
   },
   created() {
     this.iid = this.$route.params.iid
@@ -34,6 +38,8 @@ export default {
       this.topImages = data.itemInfo.topImages
       // 2. 获取商品信息
       this.goods = new GoodsInfo(data.itemInfo, data.columns, data.shopInfo.services)
+      // 3. 创建店铺信息对象
+      this.shop = new Shop(data.shopInfo)
     })
 
   },
