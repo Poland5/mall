@@ -5,16 +5,7 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-
-    }
-  },
-  components: {
-
-  }
-}
+export default {}
 </script>
 
 <style lang="less" scoped>

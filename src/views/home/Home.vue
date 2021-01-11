@@ -1,7 +1,7 @@
 <template>
   <div id="home" class="wrapper">
     <nav-bar class="home-nav">
-      <div slot="center">购物街</div>mnb
+      <div slot="center">购物街</div>
     </nav-bar>
     <tab-control
       :titles="['流行','新款','精选']"
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import HomeSwiper from './childCompons/HomeSwiper'
-import HomeRecommends from './childCompons/HomeRecommends'
-import HomeFeature from './childCompons/HomeFeature'
+import HomeSwiper from './childCompos/HomeSwiper'
+import HomeRecommends from './childCompos/HomeRecommends'
+import HomeFeature from './childCompos/HomeFeature'
 
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
