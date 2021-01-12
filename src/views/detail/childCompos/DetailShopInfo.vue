@@ -7,11 +7,11 @@
     <div class="flex shop-other-info">
       <div class="flex shop-other-item shop-other-sell">
         <div>
-          <p class="f16">{{ shop.cSells | saveNum }}</p>
+          <p class="f16">{{ shop.sells | saveNum }}</p>
           <p>总销量</p>
         </div>
         <div>
-          <p class="f16">{{ shop.cGoods }}</p>
+          <p class="f16">{{ shop.goodsCount }}</p>
           <p>全部宝贝</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default {
     saveNum(value) {
       if (value < 10000) return value
       return (value / 10000).toFixed(1) + '万'
-    },
+    }
   },
 }
 </script>
