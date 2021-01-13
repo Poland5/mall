@@ -1,7 +1,7 @@
 <template>
   <div class="detail-shop-info" v-if="Object.keys(shop).length !== 0">
     <div class="flex shop-name-info">
-      <img :src="shop.logo" alt="" class="shop-img" />
+      <img :src="shop.logo" alt="" class="shop-img"/>
       <div>{{ shop.name }}</div>
     </div>
     <div class="flex shop-other-info">
@@ -49,6 +49,8 @@ export default {
       return (value / 10000).toFixed(1) + '万'
     }
   },
+  methods: {
+  }
 }
 </script>
 

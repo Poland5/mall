@@ -1,7 +1,8 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav"/>
-    <scroll class="content">
+    <scroll class="content"
+            ref="scroll">
       <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
@@ -47,8 +48,13 @@ export default {
       this.goods = new GoodsInfo(data.itemInfo, data.columns, data.shopInfo.services)
       // 3. 创建店铺信息对象
       this.shop = new Shop(data.shopInfo)
+      this.$refs.scroll.refresh()
     })
-
+  },
+  mounted() {
+    this.$bus.$on('imageLoad', () => {
+      this.$refs.scroll.refresh()
+    })
   },
   methods: {
 
@@ -69,7 +75,11 @@ export default {
     background-color: #fff;
   }
   .content {
-    height: 300px;
+		position: absolute;
+		top: 44px;
+		bottom: 49px;
+		left: 0;
+		right: 0;
   }
 
 </style>
