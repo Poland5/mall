@@ -6,6 +6,7 @@
       <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
+      <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad"/>
     </scroll>
 
   </div>
@@ -16,6 +17,7 @@ import DetailNavBar from './childCompos/DetailNavBar'
 import DetailSwiper from './childCompos/DetailSwiper'
 import DetailBaseInfo from './childCompos/DetailBaseInfo'
 import DetailShopInfo from './childCompos/DetailShopInfo'
+import DetailGoodsInfo from './childCompos/DetailGoodsInfo'
 
 import { getDetail, GoodsInfo, Shop } from 'network/detail'
 
@@ -28,7 +30,8 @@ export default {
       iid: null,
       topImages: [],
       goods: {},
-      shop: {}
+      shop: {},
+      detailInfo: {}
     };
   },
   components: {
@@ -36,6 +39,7 @@ export default {
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
+    DetailGoodsInfo,
     Scroll
   },
   created() {
@@ -43,12 +47,19 @@ export default {
     getDetail(this.iid).then(res => {
       // 1. 获取顶部图片轮播图
       const data = res.result // 数据中转
+
+      // 2. 获取顶部图片数据
       this.topImages = data.itemInfo.topImages
-      // 2. 获取商品信息
+
+      // 3. 获取商品信息
       this.goods = new GoodsInfo(data.itemInfo, data.columns, data.shopInfo.services)
-      // 3. 创建店铺信息对象
+
+      // 4. 创建店铺信息对象
       this.shop = new Shop(data.shopInfo)
-      this.$refs.scroll.refresh()
+
+      // 5. 获取商品详细信息
+      this.detailInfo = data.detailInfo
+
     })
   },
   mounted() {
@@ -57,7 +68,9 @@ export default {
     })
   },
   methods: {
-
+    imgLoad() {
+      this.$refs.scroll.refresh()
+    }
   }
 };
 </script>
