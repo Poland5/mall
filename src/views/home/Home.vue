@@ -135,8 +135,10 @@ export default {
      */
     getMultidata(){
       getMultidata().then(res => {
-        this.banner = res.data.banner.list
-        this.recommend = res.data.recommend.list
+        this.$nextTick(() => {
+          this.banner = res.data.banner.list
+          this.recommend = res.data.recommend.list
+        })
       })
     },
     getHomeGoods(type) {

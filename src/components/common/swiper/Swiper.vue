@@ -31,6 +31,10 @@ export default {
     moveRatio: {
       type: Number,
       default: 0.25
+    },
+    isLoad: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -44,10 +48,12 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+
       // 控制dom
       this.handelDom();
       // 定时器
       this.startTime();
+
     }, 100)
   },
   methods: {
@@ -167,6 +173,13 @@ export default {
 
       // 4.让swiper元素, 显示第一个(目前是显示前面添加的最后一个元素)
       this.setTransform(-this.totalWidth)
+    }
+  },
+  watch: {
+    isLoad: function(val) {
+      this.$nextTick(() => {
+        this.handelDom()
+      })
     }
   }
 }

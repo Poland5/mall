@@ -1,6 +1,6 @@
 <template>
   <div>
-    <swiper>
+    <swiper :is-load="isLoad">
       <swiper-item v-for="(item,index) in banner" :key="index">
         <a :href="item.link">
           <img :src="item.image" @load="imageLoad">

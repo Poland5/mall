@@ -56,7 +56,6 @@ export default {
       this.scroll.finishPullUp()
     },
     refresh() {
-      console.log('this.scroll :>> ', this.scroll.scrollerHeight);
       this.scroll && this.scroll.refresh()
     },
     getPosY() {
