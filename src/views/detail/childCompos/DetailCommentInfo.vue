@@ -37,8 +37,9 @@
 		},
 		filters: {
 			showDate(value) {
-				//将时间戳转换成date对象
-				const date = new Date(value * 1000);
+        //将时间戳转换成date对象: 1535697272 -> Fri Aug 31 2018 14:34:32 GMT+0800
+        const date = new Date(value * 1000);
+        console.log('date :>> ', date);
 				//将date进行格式化
 				return formatDate(date, 'yyyy-MM-dd');
 			}
