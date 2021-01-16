@@ -2,12 +2,20 @@ import { request } from './request'
 
 export function getDetail(iid) {
   return request({
-    url: 'detail',
+    url: '/detail',
     params: {
       iid
     }
   })
 }
+
+// 商品推荐数据
+export function getRecommend() {
+  return request({
+    url: '/recommend'
+  })
+}
+
 
 /**
  * 数据整合 —— 在数据比较杂乱的情况

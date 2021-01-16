@@ -1,7 +1,7 @@
 <template>
   <swiper class="detail-swiper">
     <swiper-item v-for="(item, index) in topImages" :key="index">
-      <img :src="item" alt="" @load="imageLoad">
+      <img :src="item" alt="">
     </swiper-item>
   </swiper>
 </template>
@@ -27,11 +27,7 @@ export default {
     Swiper,
     SwiperItem
   },
-  methods: {
-    imageLoad() {
-      this.$bus.$emit('imageLoad')
-    }
-  }
+  methods: {}
 }
 </script>
 

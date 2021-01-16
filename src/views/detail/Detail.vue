@@ -9,6 +9,7 @@
       <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad"/>
       <detail-param-info :param-info="paramInfo"/>
       <detail-comment-info :comment-info="commentInfo"/>
+      <goods-list :goods="recommends"/>
     </scroll>
 
   </div>
@@ -23,9 +24,11 @@ import DetailGoodsInfo from './childCompos/DetailGoodsInfo'
 import DetailParamInfo from './childCompos/DetailParamInfo'
 import DetailCommentInfo from './childCompos/DetailCommentInfo'
 
-import { getDetail, GoodsInfo, Shop, GoodsParam } from 'network/detail'
+import { getDetail, GoodsInfo, Shop, GoodsParam, getRecommend } from 'network/detail'
+import { debounce } from 'common/utils'
 
 import Scroll from 'components/common/scroll/Scroll'
+import GoodsList from 'components/content/goods/GoodsList.vue'
 
 export default {
   name: 'Detail',
@@ -37,7 +40,8 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
-      commentInfo: []
+      commentInfo: [],
+      recommends: []
     };
   },
   components: {
@@ -48,10 +52,14 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    Scroll
+    Scroll,
+    GoodsList
   },
   created() {
+    // 1. 获取iid
     this.iid = this.$route.params.iid
+
+    // 2. 获取信息详情
     getDetail(this.iid).then(res => {
       // 1. 获取顶部图片轮播图
       const data = res.result // 数据中转
@@ -77,10 +85,16 @@ export default {
       }
 
     })
+
+    // 3. 获取信息详情
+    getRecommend().then(res => {
+      this.recommends = res.data.list
+    })
   },
   mounted() {
-    this.$bus.$on('imageLoad', () => {
-      this.$refs.scroll.refresh()
+    const refresh = debounce(this.$refs.scroll.refresh, 50)
+    this.$bus.$on('detailLoadImage', () => {
+      refresh()
     })
   },
   methods: {
