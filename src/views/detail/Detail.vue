@@ -1,17 +1,16 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"/>
+    <detail-nav-bar class="detail-nav" @clickTitle="clickTitle"/>
     <scroll class="content"
             ref="scroll">
       <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad"/>
-      <detail-param-info :param-info="paramInfo"/>
-      <detail-comment-info :comment-info="commentInfo"/>
-      <goods-list :goods="recommends"/>
+      <detail-param-info :param-info="paramInfo" ref="paramInfo"/>
+      <detail-comment-info :comment-info="commentInfo" ref="commentInfo"/>
+      <goods-list :goods="recommends" ref="goodsList"/>
     </scroll>
-
   </div>
 </template>
 
@@ -41,7 +40,8 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: [],
-      recommends: []
+      recommends: [],
+      themeTopYs: []
     };
   },
   components: {
@@ -99,7 +99,19 @@ export default {
   },
   methods: {
     imgLoad() {
-      this.$refs.scroll.refresh()
+      const refresh = debounce(this.$refs.scroll.refresh, 50)
+      refresh()
+
+      // 联动效果：标题和内容 放在这是因为必须等待图片更新完毕整个子组件才算渲染完毕
+      this.themeTopYs = []
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(this.$refs.paramInfo.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.commentInfo.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.goodsList.$el.offsetTop)
+      console.log(this.themeTopYs)
+    },
+    clickTitle(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index])
     }
   }
 };

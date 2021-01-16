@@ -30,17 +30,12 @@ export default {
     loadImageItem() {
       if (this.$route.path.indexOf('/home') !== -1) {
         this.$bus.$emit('homeLoadImage')
-      } else if(this.$route.path.indexOf('/detail') !== -1) {
+      } else if (this.$route.path.indexOf('/detail') !== -1) {
         this.$bus.$emit('detailLoadImage')
       }
     },
     clickItem() {
       this.$router.push('/detail' + this.goodsItem.iid)
-    }
-  },
-  watch: {
-    goodsItem(val) {
-      console.log(val)
     }
   }
 }
