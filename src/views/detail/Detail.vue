@@ -1,8 +1,10 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav" @clickTitle="clickTitle"/>
+    <detail-nav-bar class="detail-nav" @clickTitle="clickTitle" ref="nav"/>
     <scroll class="content"
-            ref="scroll">
+            ref="scroll"
+            @scroll="scrollContent"
+            :probeType="3">
       <detail-swiper v-if="topImages!=''" :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
@@ -41,7 +43,10 @@ export default {
       paramInfo: {},
       commentInfo: [],
       recommends: [],
-      themeTopYs: []
+      themeTopYs: [],
+      getThemeTopY: null,
+      positionY: [],
+      currentIndex: 0
     };
   },
   components: {
@@ -90,6 +95,16 @@ export default {
     getRecommend().then(res => {
       this.recommends = res.data.list
     })
+
+    // 4. 给getThemeTopY赋值，进行防抖操作
+    this.getThemeTopY = debounce(() => {
+      // 联动效果：标题和内容 放在这是因为必须等待图片更新完毕整个子组件才算渲染完毕
+      this.themeTopYs = []
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(this.$refs.paramInfo.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.commentInfo.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.goodsList.$el.offsetTop)
+    }, 50)
   },
   mounted() {
     const refresh = debounce(this.$refs.scroll.refresh, 50)
@@ -102,16 +117,20 @@ export default {
       const refresh = debounce(this.$refs.scroll.refresh, 50)
       refresh()
 
-      // 联动效果：标题和内容 放在这是因为必须等待图片更新完毕整个子组件才算渲染完毕
-      this.themeTopYs = []
-      this.themeTopYs.push(0)
-      this.themeTopYs.push(this.$refs.paramInfo.$el.offsetTop)
-      this.themeTopYs.push(this.$refs.commentInfo.$el.offsetTop)
-      this.themeTopYs.push(this.$refs.goodsList.$el.offsetTop)
-      console.log(this.themeTopYs)
+      this.getThemeTopY()
     },
     clickTitle(index) {
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index])
+    },
+    scrollContent(position) {
+      const positionY = -position.y
+      let length = this.themeTopYs.length
+      for (let i = 0; i < length; i++) {
+        if (this.currentIndex !== i && (i < length - 1 && (positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i + 1]) || (i === length - 1 && positionY > this.themeTopYs[i]))) {
+          this.currentIndex = i
+          this.$refs.nav.currentIndex = this.currentIndex
+        }
+      }
     }
   }
 };
