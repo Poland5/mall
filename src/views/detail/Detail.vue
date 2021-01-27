@@ -13,7 +13,7 @@
       <detail-comment-info :comment-info="commentInfo" ref="commentInfo"/>
       <goods-list :goods="recommends" ref="goodsList"/>
     </scroll>
-    <detail-bot-bar></detail-bot-bar>
+    <detail-bot-bar @addCart="addToCart"></detail-bot-bar>
     <back-top @click.native="clickBack" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -138,6 +138,15 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+    },
+    addToCart() {
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.newPrice
+      product.iid = this.iid // 商品唯一标识，有了这个属性服务器才知道哪个用户购买
+      this.$store.commit('addCart', product)
     }
   }
 };

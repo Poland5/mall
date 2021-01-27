@@ -22,7 +22,7 @@ export default {
   name: "DetailBotBar",
   methods: {
     addCart: function() {
-      console.log('addCart')
+      this.$emit('addCart')
     }
   }
 }
