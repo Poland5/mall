@@ -146,7 +146,7 @@ export default {
       product.desc = this.goods.desc
       product.price = this.goods.newPrice
       product.iid = this.iid // 商品唯一标识，有了这个属性服务器才知道哪个用户购买
-      this.$store.commit('addCart', product)
+      this.$store.dispatch('addCart', product)
     }
   }
 };
