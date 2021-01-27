@@ -33,10 +33,10 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
-import BackTop from 'components/content/backTop/BackTop'
 
 import { getMultidata, getHomeGoods } from 'network/home'
 import { debounce } from 'common/utils'
+import { backTopMixin } from 'common/mixin'
 
 export default {
   data() {
@@ -49,12 +49,12 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentTypes: 'pop',
-      isShowBackTop: false,
       controlOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
     }
   },
+  mixins: [ backTopMixin ],
   components: {
     HomeSwiper,
     HomeRecommends,
@@ -62,8 +62,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
-    Scroll,
-    BackTop
+    Scroll
   },
   created() {
     // 1. 请求多个数据
@@ -110,11 +109,8 @@ export default {
       this.$refs.tabControlFixed.currentIndex = index
       this.$refs.tabControl.currentIndex = index
     },
-    clickBack() {
-      this.$refs.scroll.scrollTo(0, 0)
-    },
     scrollContent(position) {
-      this.isShowBackTop = Math.abs(position.y) > 1000
+      this.isShowBackTop = Math.abs(position.y) > this.MAX_POSITION_Y
 
       // 判断是否吸顶
       this.isTabFixed = Math.abs(position.y) > this.tabOffsetTop

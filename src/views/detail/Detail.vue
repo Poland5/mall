@@ -13,6 +13,8 @@
       <detail-comment-info :comment-info="commentInfo" ref="commentInfo"/>
       <goods-list :goods="recommends" ref="goodsList"/>
     </scroll>
+    <detail-bot-bar></detail-bot-bar>
+    <back-top @click.native="clickBack" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -24,9 +26,11 @@ import DetailShopInfo from './childCompos/DetailShopInfo'
 import DetailGoodsInfo from './childCompos/DetailGoodsInfo'
 import DetailParamInfo from './childCompos/DetailParamInfo'
 import DetailCommentInfo from './childCompos/DetailCommentInfo'
+import DetailBotBar from './childCompos/DetailBotBar.vue'
 
 import { getDetail, GoodsInfo, Shop, GoodsParam, getRecommend } from 'network/detail'
 import { debounce } from 'common/utils'
+import { backTopMixin } from 'common/mixin'
 
 import Scroll from 'components/common/scroll/Scroll'
 import GoodsList from 'components/content/goods/GoodsList.vue'
@@ -49,6 +53,7 @@ export default {
       currentIndex: 0
     };
   },
+  mixins: [ backTopMixin ],
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -57,6 +62,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBotBar,
     Scroll,
     GoodsList
   },
@@ -123,6 +129,7 @@ export default {
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index])
     },
     scrollContent(position) {
+      this.isShowBackTop = Math.abs(position.y) > this.MAX_POSITION_Y
       const positionY = -position.y
       let length = this.themeTopYs.length
       for (let i = 0; i < length; i++) {
