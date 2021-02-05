@@ -19,7 +19,6 @@ export default {
     },
     checkLength() {
       return '(' + this.$store.state.cartList.filter(item => item.checked).length + ')'
-
     }
   }
 }
