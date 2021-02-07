@@ -2,7 +2,7 @@
   <div class="cart-wrap">
     <!-- 导航 -->
     <nav-bar class="cart-nav">
-			<div slot="center">购物车({{cartNum}})</div>
+			<div slot="center">购物车({{cartLength}})</div>
 		</nav-bar>
     <!-- 商品列表 -->
     <cart-list></cart-list>
@@ -28,13 +28,16 @@ export default {
     CartBotBar
   },
   computed: {
-    ...mapGetters(['cartNum'])
+    ...mapGetters(['cartLength'])
   }
 }
 
 </script>
 
 <style lang="less" scoped="scoped">
+  .cart-wrap{
+    height: 100vh;
+  }
 	.cart-nav {
 		color: #fff;
 		background-color: var(--color-high-text);

@@ -2,8 +2,8 @@
 	<div>
 		<div class="cart-list-main flex" v-for="item in cartList" :key="item.iid">
 			<div class="cart-list-left flex">
-				<input type="checkbox" class="check" v-model="item.checked" >
-				<img :src="item.image" alt="" class="goods-img">
+        <check-btn :is-checked="item.checked" @click.native="checkClick"></check-btn>
+				<img :src="item.image" class="goods-img">
 			</div>
 			<div class="cart-list-right">
 				<div class="goods-name one-txt-cut">{{item.title}}</div>
@@ -16,7 +16,9 @@
 </template>
 
 <script>
+import CheckBtn from 'components/content/checkBtn/CheckBtn'
 export default {
+  components: { CheckBtn },
   name: 'CartListItem',
   props: {
     cartList: {
@@ -24,6 +26,11 @@ export default {
       default() {
         return []
       }
+    }
+  },
+  methods: {
+    checkClick() {
+      this.cartList.checked = !this.cartList.checked
     }
   }
 }
@@ -37,17 +44,6 @@ export default {
 	.cart-list-left {
 		width: 26%;
 		align-items: center;
-		.check {
-			width: 20px;
-			height: 20px;
-			overflow: hidden;
-			border-radius: 100%;
-			border: 1px solid #ececec;
-		}
-		.check:checked {
-			background: url(~assets/img/detail/check_active.png) no-repeat center;
-			background-size: cover;
-		}
 		.goods-img {
 			width: 52px;
 			height: 66px;
