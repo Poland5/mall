@@ -33,10 +33,17 @@ export default {
      * 监听选中的状态
      * 1. 没有商品，全选按钮为不选中
      * 2. 有商品，只有所有商品选中，全选按钮才会打钩
-     */   
+     */
     isSelecteAll() {
       if (this.cartList.length === 0) return false
       return !this.cartList.find(item => !item.checked) // find方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。
+
+      // 3.普通遍历
+      // for (let item of this.cartList) {
+      //   if (!item.checked) return false
+      //   return true
+      // }
+
     }
   },
   methods: {

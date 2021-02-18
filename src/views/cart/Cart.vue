@@ -13,7 +13,7 @@
 <script>
 import NavBar from 'components/common/navbar/NavBar'
 import { mapGetters } from 'vuex'
-import CartList from './childCompos/CartList.vue'
+import CartList from './childCompos/CartList'
 import CartBotBar from './childCompos/CartBotBar'
 
 export default {

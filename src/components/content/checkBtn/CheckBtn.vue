@@ -1,6 +1,6 @@
 <template>
-  <div class="check-btn" :class="{checked: isChecked}">
-    <span class="no-check" v-if="isChecked"></span>
+  <div class="check-btn">
+    <span class="no-check" v-if="!isChecked"></span>
     <img src="~assets/img/detail/check_active.png" v-else>
   </div>
 </template>
@@ -18,19 +18,18 @@ export default {
 
 <style lang="less" scoped>
 .check-btn {
-  span{
+  .no-check {
     display: block;
     width: 18px;
     height: 18px;
     overflow: hidden;
     border-radius: 100%;
-    vertical-align: bottom;
     border: 1px solid #ececec;
     border-radius: 50%;
   }
   img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

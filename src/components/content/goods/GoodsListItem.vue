@@ -1,6 +1,6 @@
 <template>
   <div class="goods-list-item" @click="clickItem">
-		<img :src="showImage" class="goods-list-img" @load="loadImageItem">
+		<img v-lazy="showImage" class="goods-list-img" @load="loadImageItem">
 		<div class="goods-list-text">
 			<div class="goods-list-name one-txt-cut">{{goodsItem.title}}</div>
 			<div class="goods-list-price">

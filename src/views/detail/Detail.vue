@@ -33,7 +33,9 @@ import { debounce } from 'common/utils'
 import { backTopMixin } from 'common/mixin'
 
 import Scroll from 'components/common/scroll/Scroll'
-import GoodsList from 'components/content/goods/GoodsList.vue'
+import GoodsList from 'components/content/goods/GoodsList'
+
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Detail',
@@ -119,6 +121,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['addCart']),
     imgLoad() {
       const refresh = debounce(this.$refs.scroll.refresh, 50)
       refresh()
@@ -146,7 +149,9 @@ export default {
       product.desc = this.goods.desc
       product.price = this.goods.realPrice
       product.iid = this.iid // 商品唯一标识，有了这个属性服务器才知道哪个用户购买
-      this.$store.dispatch('addCart', product)
+      this.addCart(product).then(res => {
+        this.$toast.show(res, 2000)
+      })
     }
   }
 };

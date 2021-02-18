@@ -1,109 +1,7 @@
 <template>
 	<div class="cart-list-wrap">
     <scroll class="content">
-		  <!-- <cart-list-item v-for="(item, index) in cartList" :key="index" :product="item"></cart-list-item> -->
-      <ul>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-        <li>内容</li>
-      </ul>
+		  <cart-list-item v-for="(item, index) in cartList" :key="index" :product="item"></cart-list-item>
     </scroll>
 	</div>
 </template>
@@ -111,6 +9,7 @@
 <script>
 import Scroll from 'components/common/scroll/Scroll'
 import CartListItem from './CartListItem'
+import { mapGetters } from 'vuex'
 export default {
   name: 'CartList',
   components: {
@@ -118,9 +17,7 @@ export default {
     Scroll
   },
   computed: {
-    cartList() {
-      return this.$store.state.cartList
-    }
+    ...mapGetters(['cartList'])
   }
 }
 </script>
